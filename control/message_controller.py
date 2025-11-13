@@ -1,11 +1,11 @@
 import datetime
 
-from database.mongodb_connection import mongodb_connection
+from database.mongodb_connection import MongoDBConnection
 
 
 class message_controller():
     def __init__(self): 
-        self.dbconnection = mongodb_connection("messages").get_table()
+        self.dbconnection = MongoDBConnection("messages").get_table()
 
     def create_message(self, username, picture, topic, text):
         print(username)

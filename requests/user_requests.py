@@ -1,10 +1,11 @@
+"""
+User Request Handler
+Most User Requests will be changed with the new Auth
+"""
 from flask import Blueprint
 from flask_restx import Api, Resource
 
-from control.user_controller import user_controller
-from flask import Blueprint
-from flask_restx import Api, Resource
-
+from control.user_controller import UserController
 from datamodel.user import ApiUser, ReturnUser
 
 
@@ -15,7 +16,7 @@ api = Api(bp, version='1.0', title='API',
 )
 ns = api.namespace('', description='User Logic')
 
-users = user_controller()
+users = UserController()
 recieveUserModel = ApiUser(api).Model()
 returnUserModel = ReturnUser(api).Model()
 
@@ -23,6 +24,7 @@ returnUserModel = ReturnUser(api).Model()
 
 @ns.route('/')
 class UserAPI(Resource):
+    """Create a User"""
     @ns.doc('create_user')
     @ns.expect(recieveUserModel)
     @ns.marshal_with(returnUserModel, code=201)

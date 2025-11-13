@@ -1,9 +1,10 @@
-from datamodel.message import ApiMessage
+"""Chat Message Request Handler"""
 from flask import Blueprint
 from flask_restx import Api, Resource
 from control.message_controller import message_controller
-
 from datamodel.message import ApiMessage
+
+
 
 
 bp = Blueprint('messages', __name__)
@@ -50,7 +51,3 @@ class MessageStreamAPI(Resource):
         if time == 0:
             return []
         return messages.get_message_stream(topic=topic, time=time)
-    
-   
-
-
