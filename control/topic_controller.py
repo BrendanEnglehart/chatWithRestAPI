@@ -9,12 +9,15 @@ from database.mongodb_connection import MongoDBConnection
 
 class TopicController():
     """Topic Controller"""
-    def __init__(self): 
+    def __init__(self):
         self.dbconnection = MongoDBConnection("topics").get_table()
 
-    def create_topic(self, name, topic_type, category_id):
+    def create_topic(self, name, topic_type, category_id, metadata):
         """Create a topic"""
-        self.dbconnection.insert_one({"name" : name, "type" : topic_type, "category_id" : category_id})
+        self.dbconnection.insert_one({"name" : name,
+                                      "type" : topic_type,
+                                      "category_id" : category_id,
+                                      "metadata": metadata})
         return True
 
     def retrieve_topics(self, category_id):

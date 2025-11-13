@@ -10,8 +10,8 @@ api = Api(TopicBlueprint, version='1.0', title='API',
 )
 ns = api.namespace('', description='topic Logic')
 
-topicModel = ApiTopic(api).Model()
-topicListModel = ApiTopic(api).List()
+topicModel = ApiTopic(api).get_model()
+topicListModel = ApiTopic(api).get_list()
 topic = TopicController()
 @ns.route('/<string:category_id>')
 @ns.response(404, 'Category not found')
@@ -33,4 +33,4 @@ class CreateTopicAPI(Resource):
     @ns.marshal_with(topicModel, code=201)
     def post(self):
         '''Create a new topic'''
-        return topic.create_topic(topic_type=api.payload["type"], name=api.payload["name"], category_id=api.payload["category_id"]), 201
+        return topic.create_topic(topic_type=api.payload["type"], name=api.payload["name"], category_id=api.payload["category_id"], metadata=api.payload["metadata"]), 201

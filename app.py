@@ -28,15 +28,6 @@ api = Api(app, version='1.0', title='API',
 )
 ns = api.namespace('chat', description='Chat operations')
 
-
-
-
-
-
-
-
-
-
 #These need new class names, but not now
 # @ns.route('/users')
 # class UsersAPI(Resource):

@@ -1,7 +1,7 @@
 from database.mongodb_connection import MongoDBConnection
 
 
-class category_controller():
+class CategoryController():
     """Controller for the Category Objects
     Categories are lists of Topics
     """
@@ -13,6 +13,7 @@ class category_controller():
         if self.dbconnection.count_documents({"name" : name, "joinable" : joinable}) > 0:
             return False
         self.dbconnection.insert_one({"name" : name, "joinable" : joinable})
+        return self.dbconnection.find_one({"name" : name, "joinable" : joinable})
 
     def list_categories(self):
         """Lists all categories that are joinable"""

@@ -15,8 +15,8 @@ ns = api.namespace('', description='Messaging Logic')
 
 
 
-messageModel = ApiMessage(api).Model()
-messagesModel = ApiMessage(api).List()
+messageModel = ApiMessage(api).get_model()
+messagesModel = ApiMessage(api).get_list()
 messages = message_controller()
 
 @ns.route('/<string:topic>')

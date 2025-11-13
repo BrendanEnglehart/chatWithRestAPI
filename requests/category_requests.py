@@ -2,7 +2,7 @@ from flask import Blueprint
 from flask_restx import Api, Resource
 
 from datamodel.category import ApiCategory
-from control.category_controller import category_controller
+from control.category_controller import CategoryController
 
 CategoryBlueprint = Blueprint('category', __name__)
 api = Api(CategoryBlueprint, version='1.0', title='API',
@@ -10,9 +10,9 @@ api = Api(CategoryBlueprint, version='1.0', title='API',
 )
 ns = api.namespace('category', description='category Logic')
 
-categoryModel = ApiCategory(api).Model()
-categoriesModel = ApiCategory(api).List()
-category = category_controller()
+categoryModel = ApiCategory(api).get_model()
+categoriesModel = ApiCategory(api).get_list()
+category = CategoryController()
 
 @ns.route('/')
 @ns.response(404, 'Error creating category')
