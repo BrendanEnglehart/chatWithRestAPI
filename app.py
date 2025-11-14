@@ -6,7 +6,7 @@ from requests.topic_requests import TopicBlueprint
 from requests.category_requests import CategoryBlueprint
 from requests.user_requests import bp as user_api
 from requests.login_requests import bp as login_api
-
+from requests.landing_requests import LandingBlueprint
 
 app = Flask(__name__)
 app.register_blueprint(message_api, url_prefix="/message")
@@ -15,6 +15,7 @@ app.register_blueprint(login_api, url_prefix="/login")
 # New name conventions, this is more descriptive of what this is doing
 app.register_blueprint(TopicBlueprint, url_prefix="/topic")
 app.register_blueprint(CategoryBlueprint, url_prefix="/category")
+app.register_blueprint(LandingBlueprint, url_prefix="/landing")
 
 @app.after_request
 def enable_cors(response):

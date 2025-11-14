@@ -16,7 +16,8 @@ class ApiTopic():
             'category_id': fields.String(description='category_id'),
             'name': fields.String(description='name'),
             'type': fields.String(description='type'),
-            'metadata': fields.String(description='metadata')
+            'metadata': fields.String(description='metadata'),
+            '_id' : fields.String(description='topic_id')
             # Metadata is just mocked in for now
         })
         self.list = api.model('TopicList', { 'topics' : fields.List(fields.Nested(self.model))})

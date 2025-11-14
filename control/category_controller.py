@@ -22,3 +22,14 @@ class CategoryController():
         for item in categories:
             ret.append(item)
         return ret
+
+    def find_category(self, name, joinable):
+        """Finds a particular category and returns it if able"""
+        return self.dbconnection.find_one({"name" : name, "joinable" : joinable})
+    
+    def general_landing(self):
+        "Find the General Category or create it if it doesn't exist"
+        name, joinable = "general", True
+        if self.dbconnection.count_documents({"name" : name, "joinable" : joinable}) > 0:
+            return self.dbconnection.find_one({"name" : name, "joinable" : joinable})
+        return self.create_category(name, joinable)
