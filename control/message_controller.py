@@ -54,5 +54,4 @@ class message_controller:
         for message in messages:
             ret.append(message)
 
-        print(ret)
         return {"messages": ret}

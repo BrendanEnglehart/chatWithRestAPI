@@ -57,7 +57,6 @@ class MessageStreamAPI(Resource):
     @ns.marshal_with(messagesModel)
     def get(self, topic, time):
         """Fetch a given resource"""
-        print(time)
         if time == 0:
             return []
         return messages.get_message_stream(topic=topic, time=time)
