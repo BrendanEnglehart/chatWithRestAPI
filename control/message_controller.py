@@ -1,7 +1,7 @@
 """Logic for controlling message flow"""
 
 import datetime
-
+from bson.objectid import ObjectId
 from database.mongodb_connection import MongoDBConnection
 
 
@@ -19,7 +19,7 @@ class message_controller:
                 "time": datetime.datetime.now(),
                 "deleted": False,
                 "picture": picture,
-                "topic": topic,
+                "topic": ObjectId(topic),
                 "text": text,
             }
         )
@@ -28,7 +28,7 @@ class message_controller:
     def get_messages(self, topic):
         """Return messages"""
         messages = self.dbconnection.find(
-            {"topic": topic, "deleted": False}, sort={"time": 1}, limit=100
+            {"topic": ObjectId(topic), "deleted": False}, sort={"time": 1}, limit=100
         )
         ret = []
         for message in messages:
@@ -42,7 +42,7 @@ class message_controller:
         will start up a streaming connections instead"""
         messages = self.dbconnection.find(
             {
-                "topic": topic,
+                "topic": ObjectId(topic),
                 "deleted": False,
                 "time": {"$gt": datetime.datetime.fromisoformat(time)},
             },

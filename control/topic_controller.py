@@ -5,6 +5,7 @@ In the future they will contain metadata that pertains to
 the specific topic
 """
 
+from bson.objectid import ObjectId
 from database.mongodb_connection import MongoDBConnection
 
 
@@ -18,7 +19,7 @@ class TopicController:
         """Create a topic"""
         if (
             self.dbconnection.count_documents(
-                {"name": name, "category_id": category_id}
+                {"name": name, "category_id": ObjectId(category_id)}
             )
             > 0
         ):
@@ -27,15 +28,15 @@ class TopicController:
             {
                 "name": name,
                 "type": topic_type,
-                "category_id": category_id,
+                "category_id": ObjectId(category_id),
                 "metadata": metadata,
             }
         )
-        return self.dbconnection.find_one({"name": name, "category_id": category_id})
+        return self.dbconnection.find_one({"name": name, "category_id": ObjectId(category_id)})
 
     def retrieve_topics(self, category_id):
         """retrieve all topics matching a category id"""
-        topics = self.dbconnection.find({"category_id": category_id})
+        topics = self.dbconnection.find({"category_id": ObjectId(category_id)})
         ret = []
         for topic in topics:
             ret.append(topic)
@@ -45,13 +46,13 @@ class TopicController:
         """retrieve the General topic or create it"""
         if (
             self.dbconnection.count_documents(
-                {"name": "general", "category_id": category_id}
+                {"name": "general", "category_id": ObjectId(category_id)}
             )
             > 0
         ):
             return self.dbconnection.find_one(
-                {"name": "general", "category_id": category_id}
+                {"name": "general", "category_id": ObjectId(category_id)}
             )
         return self.create_topic(
-            name="general", topic_type="general", category_id=category_id
+            name="general", topic_type="general", category_id=ObjectId(category_id)
         )
