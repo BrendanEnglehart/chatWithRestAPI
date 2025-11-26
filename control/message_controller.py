@@ -5,7 +5,7 @@ from bson.objectid import ObjectId
 from database.mongodb_connection import MongoDBConnection
 
 
-class message_controller:
+class MessageController:
     """Controller for sending and recieving messages"""
 
     def __init__(self):

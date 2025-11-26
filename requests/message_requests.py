@@ -2,7 +2,7 @@
 
 from flask import Blueprint
 from flask_restx import Api, Resource
-from control.message_controller import message_controller
+from control.message_controller import MessageController
 from datamodel.message import ApiMessage
 
 
@@ -18,7 +18,7 @@ ns = api.namespace("", description="Messaging Logic")
 
 messageModel = ApiMessage(api).get_model()
 messagesModel = ApiMessage(api).get_list()
-messages = message_controller()
+messages = MessageController()
 
 
 @ns.route("/<string:topic>")
