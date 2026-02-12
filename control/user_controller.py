@@ -3,22 +3,22 @@ User Controller
 Needs a rewrite now that I've switched to Auth0
 """
 from database.mongodb_connection import MongoDBConnection
-from datamodel.user import User
 
 
 class UserController():
     """Controls all user operations"""
-    def __init__(self): 
+    def __init__(self):
         self.dbconnection = MongoDBConnection("users").get_table()
- 
-    def create_user(self, username, email, picture):
-        """Create A User"""
-        cursor = self.dbconnection.count_documents({"username" : username})
+
+    def create_or_retrieve_user(self, user):
+        """Create A User
+            User Creation really happens in Auth0, 
+            this just initializes personal info on the server
+        """
+        cursor = self.dbconnection.count_documents({"auth_id" : user["auth_id"]})
         if cursor == 0:
-            #personal_category =
-            # self.dbconnection.find({"category":username, "joinable":False})[0]._id
-            new_user = User(username=username, email=email, picture=picture, category_id=0)
-            self.dbconnection.insert_one(new_user)
+            self.dbconnection.insert_one(user)
+        return self.dbconnection.find_one(user)
 
     def get_user(self, username):
         """Retrieve User information"""

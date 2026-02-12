@@ -20,11 +20,11 @@ api = Api(
 ns = api.namespace("", description="User Logic")
 
 users = UserController()
-recieveUserModel = ApiUser(api).Model()
-returnUserModel = ReturnUser(api).Model()
+recieveUserModel = ApiUser(api).get_model()
+returnUserModel = ReturnUser(api).get_model()
 
 
-@ns.route("/")
+@ns.route("/login")
 class UserAPI(Resource):
     """Create a User"""
 
@@ -34,23 +34,14 @@ class UserAPI(Resource):
     def post(self):
         """Create a new user"""
         return (
-            users.create_user(
-                username=api.payload["username"],
-                picture=api.payload["picture"],
-                email=api.payload["email"],
+            users.create_or_retrieve_user(
+                {
+                    "username":api.payload["username"],
+                    "picture":api.payload["picture"],
+                    "email":api.payload["email"],
+                    "auth_id":api.payload["auth_id"],
+                }
             ),
             201,
         )
 
-
-@ns.route("/<string:username>")
-@ns.response(404, "Username not found")
-@ns.param("username", "The username to retrieve")
-class UserGetAPI(Resource):
-    """Gets a user"""
-
-    @ns.doc("get_user")
-    @ns.marshal_with(returnUserModel)
-    def get(self, username):
-        """Fetch a given resource"""
-        return users.get_user(username=username)

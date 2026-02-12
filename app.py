@@ -6,13 +6,11 @@ from requests.message_requests import bp as message_api
 from requests.topic_requests import TopicBlueprint
 from requests.category_requests import CategoryBlueprint
 from requests.user_requests import bp as user_api
-from requests.login_requests import bp as login_api
 from requests.landing_requests import LandingBlueprint
 
 app = Flask(__name__)
 app.register_blueprint(message_api, url_prefix="/message")
 app.register_blueprint(user_api, url_prefix="/user")
-app.register_blueprint(login_api, url_prefix="/login")
 # New name conventions, this is more descriptive of what this is doing
 app.register_blueprint(TopicBlueprint, url_prefix="/topic")
 app.register_blueprint(CategoryBlueprint, url_prefix="/category")
@@ -40,15 +38,6 @@ api = Api(
     description="An API",
 )
 ns = api.namespace("chat", description="Chat operations")
-
-# These need new class names, but not now
-# @ns.route('/users')
-# class UsersAPI(Resource):
-#     '''get all users'''
-#     @ns.doc('list_users')
-#     def get(self):
-#         '''List all users'''
-#         return users.get_users()
 
 if __name__ == "__main__":
     app.run(debug=True)
