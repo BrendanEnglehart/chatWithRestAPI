@@ -36,12 +36,29 @@ class UserAPI(Resource):
         return (
             users.create_or_retrieve_user(
                 {
-                    "username":api.payload["username"],
-                    "picture":api.payload["picture"],
-                    "email":api.payload["email"],
-                    "auth_id":api.payload["auth_id"],
+                    "username": api.payload["username"],
+                    "picture": api.payload["picture"],
+                    "email": api.payload["email"],
+                    "auth_id": api.payload["auth_id"],
                 }
             ),
             201,
         )
 
+
+@ns.route("/update_username")
+class UpdateUsername(Resource):
+    """Update Username"""
+
+    @ns.doc("update_username")
+    @ns.expect(returnUserModel)
+    @ns.marshal_with(bool, code=201)
+    def post(self):
+        """update username"""
+        return (
+            users.update_username(
+                username=api.payload["username"],
+                user_id=api.payload["_id"],
+            ),
+            201,
+        )

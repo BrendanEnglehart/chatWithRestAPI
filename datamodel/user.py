@@ -1,3 +1,4 @@
+"""User Class Data Models"""
 from typing import TypedDict
 from flask_restx import fields
 

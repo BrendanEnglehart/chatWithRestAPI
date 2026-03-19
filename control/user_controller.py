@@ -19,6 +19,12 @@ class UserController():
         if cursor == 0:
             self.dbconnection.insert_one(user)
         return self.dbconnection.find_one(user)
+    
+    def update_username(self, user_id, username):
+        """Update Username"""
+        return self.dbconnection.update_one({'_id': user_id}, {'username' : username})
+        
+
 
     def get_user(self, username):
         """Retrieve User information"""
