@@ -22,6 +22,7 @@ ns = api.namespace("", description="User Logic")
 users = UserController()
 recieveUserModel = ApiUser(api).get_model()
 returnUserModel = ReturnUser(api).get_model()
+returnUserList = ReturnUser(api).get_list()
 
 
 @ns.route("/login")
@@ -42,6 +43,21 @@ class UserAPI(Resource):
                     "auth_id": api.payload["auth_id"],
                 }
             ),
+            201,
+        )
+
+
+@ns.route("/list")
+class UserList(Resource):
+    """List User"""
+
+    @ns.doc("List Users")
+    @ns.expect()
+    @ns.marshal_with(returnUserList, code=201)
+    def get(self):
+        """Create a new user"""
+        return (
+            {"users": users.get_users()},
             201,
         )
 

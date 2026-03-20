@@ -39,8 +39,7 @@ class MessageAPI(Resource):
     def post(self, topic):
         """Fetch a given resource"""
         return messages.create_message(
-            username=api.payload["username"],
-            picture=api.payload["picture"],
+            user_id=api.payload["user_id"],
             topic=topic,
             text=api.payload["text"],
         )

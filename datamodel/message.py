@@ -21,11 +21,11 @@ class ApiMessage:
 
     def __init__(self, api):
         self.scaffold = {
-            "username": fields.String(description="username"),
+            "user_id": fields.String(description="user_id"),
             "time": fields.DateTime(description="time"),
             "topic": fields.String(description="topic"),
             "text": fields.String(description="text"),
-            "picture": fields.String(description="picture"),
+     
         }
         self.model = api.model("Message", self.scaffold)
         self.list = api.model(

@@ -11,14 +11,13 @@ class MessageController:
     def __init__(self):
         self.dbconnection = MongoDBConnection("messages").get_table()
 
-    def create_message(self, username, picture, topic, text):
+    def create_message(self, user_id,  topic, text):
         """Create a message"""
         self.dbconnection.insert_one(
             {
-                "username": username,
+                "user_id": ObjectId(user_id),
                 "time": datetime.datetime.now(),
                 "deleted": False,
-                "picture": picture,
                 "topic": ObjectId(topic),
                 "text": text,
             }

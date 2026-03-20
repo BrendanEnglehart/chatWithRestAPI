@@ -18,7 +18,7 @@ class UserController():
         cursor = self.dbconnection.count_documents({"auth_id" : user["auth_id"]})
         if cursor == 0:
             self.dbconnection.insert_one(user)
-        return self.dbconnection.find_one(user)
+        return self.dbconnection.find_one({"auth_id" : user["auth_id"]})
     
     def update_username(self, user_id, username):
         """Update Username"""
@@ -33,11 +33,11 @@ class UserController():
 
     def get_users(self):
         """Retrieve a list of Users"""
-        cursor = self.dbconnection.find({"username": {"$exists" : "true"}})
+        cursor = self.dbconnection.find()
         ret = []
         # we could do this in a 1 liner, but the reason not to is because this isn't my final form!
         for user in cursor:
-            ret.append(user['username'])
+            ret.append(user)
         
         return ret
 

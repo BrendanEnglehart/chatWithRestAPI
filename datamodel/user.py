@@ -37,6 +37,14 @@ class ReturnUser():
             '_id': fields.String(description='User ID')
         })
 
+        self.list = api.model(
+            "UserList", {"users": fields.List(fields.Nested(self.model))}
+        )
+
     def get_model(self):
-        """Return the API Moel"""
+        """Return the API Model"""
         return self.model
+    
+    def get_list(self):
+        """Return the User List"""
+        return self.list
