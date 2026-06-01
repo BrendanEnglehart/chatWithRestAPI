@@ -68,9 +68,10 @@ class UpdateUsername(Resource):
 
     @ns.doc("update_username")
     @ns.expect(returnUserModel)
-    @ns.marshal_with(bool, code=201)
+    @ns.marshal_with(returnUserModel, code=201)
     def post(self):
         """update username"""
+        print(api.payload)
         return (
             users.update_username(
                 username=api.payload["username"],

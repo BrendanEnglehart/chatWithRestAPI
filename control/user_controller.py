@@ -22,7 +22,16 @@ class UserController():
     
     def update_username(self, user_id, username):
         """Update Username"""
-        return self.dbconnection.update_one({'_id': user_id}, {'username' : username})
+        print (username, "here" )
+        query_filter = {'auth_id': user_id}
+        print (username, "here2" )
+        update_operation = { '$set' :
+           {'username' : username}
+        }
+        print (username, "here3" )
+        result = self.dbconnection.update_one(query_filter, update_operation)
+        print (result )
+        return self.dbconnection.find_one({"auth_id" : user_id})
         
 
 
