@@ -25,7 +25,28 @@ class ApiMessage:
             "time": fields.DateTime(description="time"),
             "topic": fields.String(description="topic"),
             "text": fields.String(description="text"),
-     
+            "_id": fields.String(description="_id"),
+        }
+        self.model = api.model("Message", self.scaffold)
+        self.list = api.model(
+            "MessageList", {"messages": fields.List(fields.Nested(self.model))}
+        )
+
+    def get_model(self):
+        """Returns the Model"""
+        return self.model
+
+    def get_list(self):
+        """Return the List Structure for the model"""
+        return self.list
+
+class ApiDeleteMessage:
+    """API Model for Deleting the Chat Message"""
+
+    def __init__(self, api):
+        self.scaffold = {
+            "user_id": fields.String(description="user_id"),
+            "_id": fields.String(description="_id"),
         }
         self.model = api.model("Message", self.scaffold)
         self.list = api.model(

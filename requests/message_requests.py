@@ -3,7 +3,7 @@
 from flask import Blueprint
 from flask_restx import Api, Resource
 from control.message_controller import MessageController
-from datamodel.message import ApiMessage
+from datamodel.message import ApiMessage, ApiDeleteMessage
 
 
 bp = Blueprint("messages", __name__)
@@ -15,6 +15,9 @@ api = Api(
 )
 ns = api.namespace("", description="Messaging Logic")
 
+
+
+deleteModel = ApiDeleteMessage(api).get_model()
 
 messageModel = ApiMessage(api).get_model()
 messagesModel = ApiMessage(api).get_list()
@@ -42,6 +45,19 @@ class MessageAPI(Resource):
             user_id=api.payload["user_id"],
             topic=topic,
             text=api.payload["text"],
+        )
+
+@ns.route("/delete/message")
+@ns.response(404, "Message not found")
+class DeleteMessageAPI(Resource):
+    """Delete Message"""
+    @ns.doc("delete_message")
+    @ns.expect(deleteModel)
+    def post(self):
+        """delete message"""
+        return messages.delete_message(
+            user_id=api.payload["user_id"],
+            _id=api.payload["_id"]
         )
 
 

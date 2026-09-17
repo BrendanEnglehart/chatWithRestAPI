@@ -11,7 +11,7 @@ class MessageController:
     def __init__(self):
         self.dbconnection = MongoDBConnection("messages").get_table()
 
-    def create_message(self, user_id,  topic, text):
+    def create_message(self, user_id, topic, text):
         """Create a message"""
         self.dbconnection.insert_one(
             {
@@ -23,6 +23,12 @@ class MessageController:
             }
         )
         return True
+
+    def delete_message(self, _id, user_id):
+        """Flags a message for deletion"""
+        self.dbconnection.update_one(
+            {"user_id": ObjectId(user_id), "_id": ObjectId(_id)}, {"$set":{"deleted": True}}
+        )
 
     def get_messages(self, topic):
         """Return messages"""
@@ -36,8 +42,8 @@ class MessageController:
         return {"messages": ret}
 
     def get_message_stream(self, topic, time):
-        """Return a set of messages after a time, 
-        In the future calling this request 
+        """Return a set of messages after a time,
+        In the future calling this request
         will start up a streaming connections instead"""
         messages = self.dbconnection.find(
             {
