@@ -13,16 +13,26 @@ class MessageController:
 
     def create_message(self, user_id, topic, text):
         """Create a message"""
+        time = datetime.datetime.now()
         self.dbconnection.insert_one(
             {
                 "user_id": ObjectId(user_id),
-                "time": datetime.datetime.now(),
+                "time": time,
                 "deleted": False,
                 "topic": ObjectId(topic),
                 "text": text,
             }
         )
-        return True
+        ret = self.dbconnection.find_one(
+            {
+                "user_id": ObjectId(user_id),
+                "time": time,
+                "deleted": False,
+                "topic": ObjectId(topic),
+                "text": text,
+            }
+        )
+        return ret
 
     def delete_message(self, _id, user_id):
         """Flags a message for deletion"""
