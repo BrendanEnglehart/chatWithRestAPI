@@ -34,6 +34,26 @@ class MessageController:
         )
         return ret
 
+
+    def edit_message(self, user_id, _id, text):
+        """Edit a message"""
+        self.dbconnection.update_one(
+             {"user_id": ObjectId(user_id), "_id": ObjectId(_id)},
+            {
+                "$set": 
+                {
+                    "text": text,
+                }
+            }
+        )
+        ret = self.dbconnection.find_one(
+            {
+                "user_id": ObjectId(user_id),
+                "_id": ObjectId(_id),
+            }
+        )
+        return ret
+    
     def delete_message(self, _id, user_id):
         """Flags a message for deletion"""
         self.dbconnection.update_one(
