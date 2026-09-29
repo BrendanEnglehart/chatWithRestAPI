@@ -22,9 +22,8 @@ class MongoDBConnection:
 
     def __init__(self, table):
         """
-        # Table is the name of the table you wish to acess
-        # All of the connections use the same client no matter where we instantiate it.
-        # print(hex(id(client)))
+         Table is the name of the table you wish to acess
+         All of the connections use the same client no matter where we instantiate it.
         """
         self.table = database[table]
 
