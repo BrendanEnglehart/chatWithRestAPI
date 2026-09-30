@@ -1,10 +1,11 @@
+"""Category Request Blueprint"""
 from flask import Blueprint
 from flask_restx import Api, Resource
 
 from datamodel.category import ApiCategory
 from control.category_controller import CategoryController
 
-CategoryBlueprint = Blueprint("category", __name__)
+CategoryBlueprint = Blueprint("category", __name__) # pylint: disable=invalid-name
 api = Api(
     CategoryBlueprint,
     version="1.0",

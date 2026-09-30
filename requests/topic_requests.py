@@ -5,7 +5,7 @@ from flask_restx import Api, Resource
 from datamodel.topic import ApiTopic
 from control.topic_controller import TopicController
 
-TopicBlueprint = Blueprint("topic", __name__)
+TopicBlueprint = Blueprint("topic", __name__)  # pylint: disable=invalid-name
 api = Api(
     TopicBlueprint,
     version="1.0",

@@ -8,7 +8,7 @@ from datamodel.message import ApiMessage
 from datamodel.topic import ApiTopic
 
 
-LandingBlueprint = Blueprint("landing", __name__)
+LandingBlueprint = Blueprint("landing", __name__)  # pylint: disable=invalid-name
 api = Api(
     LandingBlueprint,
     version="1.0",

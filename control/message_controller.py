@@ -34,17 +34,15 @@ class MessageController:
         )
         return ret
 
-
     def edit_message(self, user_id, _id, text):
         """Edit a message"""
         self.dbconnection.update_one(
-             {"user_id": ObjectId(user_id), "_id": ObjectId(_id)},
+            {"user_id": ObjectId(user_id), "_id": ObjectId(_id)},
             {
-                "$set": 
-                {
+                "$set": {
                     "text": text,
                 }
-            }
+            },
         )
         ret = self.dbconnection.find_one(
             {
@@ -53,11 +51,12 @@ class MessageController:
             }
         )
         return ret
-    
+
     def delete_message(self, _id, user_id):
         """Flags a message for deletion"""
         self.dbconnection.update_one(
-            {"user_id": ObjectId(user_id), "_id": ObjectId(_id)}, {"$set":{"deleted": True}}
+            {"user_id": ObjectId(user_id), "_id": ObjectId(_id)},
+            {"$set": {"deleted": True}},
         )
 
     def get_messages(self, topic):

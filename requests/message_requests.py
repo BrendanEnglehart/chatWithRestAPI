@@ -5,7 +5,7 @@ from flask_restx import Api, Resource
 from control.message_controller import MessageController
 from datamodel.message import ApiMessage, ApiDeleteMessage
 
-bp = Blueprint("messages", __name__)
+bp = Blueprint("messages", __name__)  # pylint: disable=invalid-name
 api = Api(
     bp,
     version="1.0",

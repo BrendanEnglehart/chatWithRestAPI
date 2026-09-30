@@ -22,7 +22,7 @@ def enable_cors(response):
     """Enable Cross Origin Resource Sharing"""
     response.headers.add(
         "Access-Control-Allow-Headers",
-        "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers",
+        "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers",  # pylint: disable=line-too-long
     )
     response.headers.add(
         "Access-Control-Allow-Methods", "DELETE, GET, HEAD, OPTIONS, PATCH, POST, PUT"
