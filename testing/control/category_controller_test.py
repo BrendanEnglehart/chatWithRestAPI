@@ -9,7 +9,7 @@ class TestCategoryController(unittest.TestCase):
     """Main Test Suite for the Categories"""
 
     @patch("control.category_controller.MongoDBConnection")
-    def setUp(self, mock_db_conn_class):
+    def setUp(self, mock_db_conn_class): # pylint: disable=arguments-differ
         """Runs before each test method.
 
         Sets up a fresh MagicMock for the database table collection.
