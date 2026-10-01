@@ -168,3 +168,107 @@ class TestMessageController(unittest.TestCase):
             limit=100,
         )
         self.assertEqual(result, {"messages": mock_messages})
+
+    # -------------------------------------------------------------------------
+    # Tests for get_feed_messages
+    # -------------------------------------------------------------------------
+
+    def test_get_feed_messages_default_parameters(self):
+        """Validates we get all messages"""
+        # Arrange
+        mock_messages = [
+            {"_id": ObjectId(), "text": "Msg 1"},
+            {"_id": ObjectId(), "text": "Msg 2"},
+        ]
+        self.mock_table.find.return_value = mock_messages
+        now = datetime.datetime.now()
+        # Act
+        result = self.controller.get_feed_messages(
+            topic=self.dummy_topic_id_str, time=now
+        )
+
+        # Assert
+        self.mock_table.find.assert_called_once_with(
+            {
+                "topic": ObjectId(self.dummy_topic_id_str),
+                "deleted": False,
+                "time": {"$lt": now},
+            },
+            sort={"time": 1},
+            limit=100,
+        )
+        self.assertEqual(result, {"messages": mock_messages})
+
+    def test_get_feed_messages_custom_time_and_size(self):
+        """validates we only pull after some date/time"""
+        # Arrange
+        custom_time = datetime.datetime(2026, 10, 1, 12, 0, 0)
+        custom_size = 25
+        mock_messages = [{"_id": ObjectId(), "text": "Older Msg"}]
+        self.mock_table.find.return_value = mock_messages
+
+        # Act
+        result = self.controller.get_feed_messages(
+            topic=self.dummy_topic_id_str, time=custom_time, size=custom_size
+        )
+
+        # Assert
+        self.mock_table.find.assert_called_once_with(
+            {
+                "topic": ObjectId(self.dummy_topic_id_str),
+                "deleted": False,
+                "time": {"$lt": custom_time},
+            },
+            sort={"time": 1},
+            limit=25,
+        )
+        self.assertEqual(result, {"messages": mock_messages})
+
+        # -------------------------------------------------------------------------
+
+    # Tests for get_next_page_messages
+    # -------------------------------------------------------------------------
+
+    def test_get_next_page_messages_first_page(self):
+        """Validate function works"""
+        # Arrange: Page 0 (default) with custom size
+        mock_messages = [{"_id": ObjectId(), "text": "Page 0 Msg"}]
+        self.mock_table.find.return_value = mock_messages
+
+        # Act
+        result = self.controller.get_next_page_messages(
+            topic=self.dummy_topic_id_str, size=20, page=0
+        )
+
+        # Assert
+        self.mock_table.find.assert_called_once_with(
+            {"topic": ObjectId(self.dummy_topic_id_str), "deleted": False},
+            sort={"time": 1},
+            limit=20,
+            skip=0,  # 20 * 0
+        )
+        self.assertEqual(result, {"messages": mock_messages})
+
+    def test_get_next_page_messages_subsequent_page(self):
+        """We enforce the return value here, so we aren't actually testing pagination
+        What we want to validate is that 
+        we do infact call the function 
+        and we haven't massively broken the function call
+        """
+        # Arrange: Page 2 with size 50 -> skip = 100
+        mock_messages = [{"_id": ObjectId(), "text": "Page 2 Msg"}]
+        self.mock_table.find.return_value = mock_messages
+
+        # Act
+        result = self.controller.get_next_page_messages(
+            topic=ObjectId(self.dummy_topic_id_str), size=50, page=2
+        )
+
+        # Assert
+        self.mock_table.find.assert_called_once_with(
+            {"topic": ObjectId(self.dummy_topic_id_str), "deleted": False},
+            sort={"time": 1},
+            limit=50,
+            skip=100,  # 50 * 2
+        )
+        self.assertEqual(result, {"messages": mock_messages})
