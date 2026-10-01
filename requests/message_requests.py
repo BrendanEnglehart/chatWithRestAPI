@@ -1,5 +1,6 @@
 """Chat Message Request Handler"""
 
+import datetime
 from flask import Blueprint
 from flask_restx import Api, Resource
 from control.message_controller import MessageController
@@ -58,6 +59,44 @@ class DeleteMessageAPI(Resource):
         return messages.delete_message(
             user_id=api.payload["user_id"], _id=api.payload["_id"]
         )
+
+
+@ns.route("/feed/topic=<string:topic>&time=<string:time>&size=<int:size>")
+@ns.response(404, "Topic not found")
+@ns.param("topic", "The topic to retrieve")
+@ns.param("time", "The time to start retrieving messages before")
+@ns.param("size", "The page size")
+class MessageFeedAPI(Resource):
+    """Gets the feed of messages"""
+
+    @ns.doc("get_messages")
+    @ns.marshal_with(messagesModel)
+    def get(self, topic, time, size=100):
+        """Fetch a given resource"""
+        return messages.get_feed_messages(
+            topic=topic,
+            time=(
+                datetime.datetime.fromisoformat(time)
+                if time is not None
+                else datetime.datetime.now()
+            ),
+            size=size,
+        )
+
+
+@ns.route("/page/topic=<string:topic>&size=<int:size>&page=<int:page>")
+@ns.response(404, "Topic not found")
+@ns.param("topic", "The topic to retrieve")
+@ns.param("size", "The page size")
+@ns.param("page", "Current Page")
+class MessagePageAPI(Resource):
+    """Gets the feed of messages"""
+
+    @ns.doc("get_messages")
+    @ns.marshal_with(messagesModel)
+    def get(self, topic, size, page):
+        """Fetch a given resource"""
+        return messages.get_next_page_messages(topic=topic, size=size, page=page)
 
 
 @ns.route("/edit/message")

@@ -70,6 +70,39 @@ class MessageController:
 
         return {"messages": ret}
 
+    # Get feed messages vs get message feed.
+    # feed_messages sounds wrong but is more of what it's doing
+    # message_feed wouldn't really confuse anyone.
+    def get_feed_messages(self, topic, time, size=100):
+        """Return messages from before a certain time"""
+        messages = self.dbconnection.find(
+            {"topic": ObjectId(topic), "deleted": False, "time": {"$lt": time}},
+            sort={"time": 1},
+            limit=size,
+        )
+        ret = []
+        for message in messages:
+            ret.append(message)
+
+        return {"messages": ret}
+
+    def get_next_page_messages(self, topic, size=100, page=0):
+        """Return messages paginated
+        # this is less performance friendly
+        Use get_feed unless you really need the paginated form
+        """
+        messages = self.dbconnection.find(
+            {"topic": ObjectId(topic), "deleted": False},
+            sort={"time": 1},
+            limit=size,
+            skip=size * page,
+        )
+        ret = []
+        for message in messages:
+            ret.append(message)
+
+        return {"messages": ret}
+
     def get_message_stream(self, topic, time):
         """Return a set of messages after a time,
         In the future calling this request
