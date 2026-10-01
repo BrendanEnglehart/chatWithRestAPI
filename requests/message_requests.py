@@ -67,13 +67,22 @@ class DeleteMessageAPI(Resource):
 @ns.param("time", "The time to start retrieving messages before")
 @ns.param("size", "The page size")
 class MessageFeedAPI(Resource):
-    """Gets the feed of messages """
+    """Gets the feed of messages"""
 
     @ns.doc("get_messages")
     @ns.marshal_with(messagesModel)
     def get(self, topic, time, size=100):
         """Fetch a given resource"""
-        return messages.get_feed_messages(topic=topic, time=(datetime.datetime.fromisoformat(time) if time is not None  else datetime.datetime.now() ), size=size)
+        return messages.get_feed_messages(
+            topic=topic,
+            time=(
+                datetime.datetime.fromisoformat(time)
+                if time is not None
+                else datetime.datetime.now()
+            ),
+            size=size,
+        )
+
 
 @ns.route("/page/topic=<string:topic>&size=<int:size>&page=<int:page>")
 @ns.response(404, "Topic not found")
@@ -81,14 +90,13 @@ class MessageFeedAPI(Resource):
 @ns.param("size", "The page size")
 @ns.param("page", "Current Page")
 class MessagePageAPI(Resource):
-    """Gets the feed of messages """
+    """Gets the feed of messages"""
 
     @ns.doc("get_messages")
     @ns.marshal_with(messagesModel)
     def get(self, topic, size, page):
         """Fetch a given resource"""
         return messages.get_next_page_messages(topic=topic, size=size, page=page)
-
 
 
 @ns.route("/edit/message")

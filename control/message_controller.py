@@ -72,7 +72,7 @@ class MessageController:
 
     # Get feed messages vs get message feed.
     # feed_messages sounds wrong but is more of what it's doing
-    # message_feed wouldn't really confuse anyone. 
+    # message_feed wouldn't really confuse anyone.
     def get_feed_messages(self, topic, time, size=100):
         """Return messages from before a certain time"""
         messages = self.dbconnection.find(
@@ -88,9 +88,9 @@ class MessageController:
 
     def get_next_page_messages(self, topic, size=100, page=0):
         """Return messages paginated
-         # this is less performance friendly
-         Use get_feed unless you really need the paginated form        
-         """
+        # this is less performance friendly
+        Use get_feed unless you really need the paginated form
+        """
         messages = self.dbconnection.find(
             {"topic": ObjectId(topic), "deleted": False},
             sort={"time": 1},
