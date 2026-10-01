@@ -73,7 +73,7 @@ class MessageFeedAPI(Resource):
     @ns.marshal_with(messagesModel)
     def get(self, topic, time, size=100):
         """Fetch a given resource"""
-        return messages.get_feed_messages(topic=topic, time=(datetime.datetime.fromisoformat(time) if time is not None  else datetime.datetime.now ), size=size)
+        return messages.get_feed_messages(topic=topic, time=(datetime.datetime.fromisoformat(time) if time is not None  else datetime.datetime.now() ), size=size)
 
 @ns.route("/page/topic=<string:topic>&size=<int:size>&page=<int:page>")
 @ns.response(404, "Topic not found")
