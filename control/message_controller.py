@@ -62,13 +62,13 @@ class MessageController:
     def get_messages(self, topic):
         """Return messages"""
         messages = self.dbconnection.find(
-            {"topic": ObjectId(topic), "deleted": False}, sort={"time": 1}, limit=100
+            {"topic": ObjectId(topic), "deleted": False}, sort={"time": -1}, limit=100
         )
         ret = []
         for message in messages:
             ret.append(message)
 
-        return {"messages": ret}
+        return {"messages": ret[::-1]}
 
     # Get feed messages vs get message feed.
     # feed_messages sounds wrong but is more of what it's doing
