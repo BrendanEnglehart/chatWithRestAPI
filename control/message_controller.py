@@ -77,14 +77,14 @@ class MessageController:
         """Return messages from before a certain time"""
         messages = self.dbconnection.find(
             {"topic": ObjectId(topic), "deleted": False, "time": {"$lt": time}},
-            sort={"time": 1},
+            sort={"time": -1},
             limit=size,
         )
         ret = []
         for message in messages:
             ret.append(message)
 
-        return {"messages": ret}
+        return {"messages": ret[::-1]}
 
     def get_next_page_messages(self, topic, size=100, page=0):
         """Return messages paginated
@@ -93,7 +93,7 @@ class MessageController:
         """
         messages = self.dbconnection.find(
             {"topic": ObjectId(topic), "deleted": False},
-            sort={"time": 1},
+            sort={"time": -1},
             limit=size,
             skip=size * page,
         )
@@ -101,7 +101,7 @@ class MessageController:
         for message in messages:
             ret.append(message)
 
-        return {"messages": ret}
+        return {"messages": ret[::-1]}
 
     def get_message_stream(self, topic, time):
         """Return a set of messages after a time,
@@ -113,7 +113,7 @@ class MessageController:
                 "deleted": False,
                 "time": {"$gt": datetime.datetime.fromisoformat(time)},
             },
-            sort={"time": 1},
+            sort={"time": -1},
             limit=100,
         )
         ret = []
@@ -121,4 +121,4 @@ class MessageController:
         for message in messages:
             ret.append(message)
 
-        return {"messages": ret}
+        return {"messages": ret[::-1]}
