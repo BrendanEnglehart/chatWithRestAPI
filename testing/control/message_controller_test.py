@@ -121,21 +121,21 @@ class TestMessageController(unittest.TestCase):
         """Validate we can still parse this on the other side"""
         # Arrange
         mock_messages = [
+            {"_id": ObjectId(self.dummy_msg_id_str), "text": "Second"},
             {"_id": ObjectId(self.dummy_msg_id_str), "text": "First"},
-            {"_id": ObjectId(), "text": "Second"},
         ]
         self.mock_table.find.return_value = mock_messages
-
+        time=datetime.datetime.now()
         # Act
-        result = self.controller.get_messages(topic=self.dummy_topic_id_str)
+        result = self.controller.get_feed_messages(topic=self.dummy_topic_id_str, time=time, size=100)
 
         # Assert
         self.mock_table.find.assert_called_once_with(
-            {"topic": ObjectId(self.dummy_topic_id_str), "deleted": False},
-            sort={"time": 1},
+            {'topic': ObjectId('507f1f77bcf86cd799439022'), 'deleted': False, 'time': {'$lt':time}},
+            sort={"time": -1},
             limit=100,
         )
-        self.assertEqual(result, {"messages": mock_messages})
+        self.assertEqual(result, {"messages": mock_messages[::-1]})
 
     # -------------------------------------------------------------------------
     # Tests for get_message_stream
@@ -164,7 +164,7 @@ class TestMessageController(unittest.TestCase):
                 "deleted": False,
                 "time": {"$gt": parsed_datetime},
             },
-            sort={"time": 1},
+            sort={"time": -1},
             limit=100,
         )
         self.assertEqual(result, {"messages": mock_messages})
@@ -194,10 +194,10 @@ class TestMessageController(unittest.TestCase):
                 "deleted": False,
                 "time": {"$lt": now},
             },
-            sort={"time": 1},
+            sort={"time": -1},
             limit=100,
         )
-        self.assertEqual(result, {"messages": mock_messages})
+        self.assertEqual(result, {"messages": mock_messages[::-1]})
 
     def test_get_feed_messages_custom_time_and_size(self):
         """validates we only pull after some date/time"""
@@ -219,7 +219,7 @@ class TestMessageController(unittest.TestCase):
                 "deleted": False,
                 "time": {"$lt": custom_time},
             },
-            sort={"time": 1},
+            sort={"time": -1},
             limit=25,
         )
         self.assertEqual(result, {"messages": mock_messages})
@@ -243,7 +243,7 @@ class TestMessageController(unittest.TestCase):
         # Assert
         self.mock_table.find.assert_called_once_with(
             {"topic": ObjectId(self.dummy_topic_id_str), "deleted": False},
-            sort={"time": 1},
+            sort={"time": -1},
             limit=20,
             skip=0,  # 20 * 0
         )
@@ -267,7 +267,7 @@ class TestMessageController(unittest.TestCase):
         # Assert
         self.mock_table.find.assert_called_once_with(
             {"topic": ObjectId(self.dummy_topic_id_str), "deleted": False},
-            sort={"time": 1},
+            sort={"time": -1},
             limit=50,
             skip=100,  # 50 * 2
         )
