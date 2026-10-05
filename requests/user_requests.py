@@ -78,3 +78,24 @@ class UpdateUsername(Resource):
             ),
             201,
         )
+
+@ns.route("/update_picture")
+class UpdatePicture(Resource):
+    """Update Picture.
+      This isn't where you upload the picture,
+        just where we change the link on the 
+        profile picture.
+      """
+
+    @ns.doc("update_picture")
+    @ns.expect(returnUserModel)
+    @ns.marshal_with(returnUserModel, code=201)
+    def post(self):
+        """update picture"""
+        return (
+            users.update_picture(
+                picture=api.payload["picture"],
+                user_id=api.payload["_id"],
+            ),
+            201,
+        )

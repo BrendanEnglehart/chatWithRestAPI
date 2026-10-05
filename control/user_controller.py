@@ -29,6 +29,13 @@ class UserController:
         self.dbconnection.update_one(query_filter, update_operation)
         return self.dbconnection.find_one({"auth_id": user_id})
 
+    def update_picture(self, user_id, picture):
+        """Update Username"""
+        query_filter = {"auth_id": user_id}
+        update_operation = {"$set": {"picture": picture}}
+        self.dbconnection.update_one(query_filter, update_operation)
+        return self.dbconnection.find_one({"auth_id": user_id})
+
     def get_user(self, username):
         """Retrieve User information"""
         user = self.dbconnection.find_one({"username": username})
