@@ -125,13 +125,19 @@ class TestMessageController(unittest.TestCase):
             {"_id": ObjectId(self.dummy_msg_id_str), "text": "First"},
         ]
         self.mock_table.find.return_value = mock_messages
-        time=datetime.datetime.now()
+        time = datetime.datetime.now()
         # Act
-        result = self.controller.get_feed_messages(topic=self.dummy_topic_id_str, time=time, size=100)
+        result = self.controller.get_feed_messages(
+            topic=self.dummy_topic_id_str, time=time, size=100
+        )
 
         # Assert
         self.mock_table.find.assert_called_once_with(
-            {'topic': ObjectId('507f1f77bcf86cd799439022'), 'deleted': False, 'time': {'$lt':time}},
+            {
+                "topic": ObjectId("507f1f77bcf86cd799439022"),
+                "deleted": False,
+                "time": {"$lt": time},
+            },
             sort={"time": -1},
             limit=100,
         )
@@ -251,8 +257,8 @@ class TestMessageController(unittest.TestCase):
 
     def test_get_next_page_messages_subsequent_page(self):
         """We enforce the return value here, so we aren't actually testing pagination
-        What we want to validate is that 
-        we do infact call the function 
+        What we want to validate is that
+        we do infact call the function
         and we haven't massively broken the function call
         """
         # Arrange: Page 2 with size 50 -> skip = 100
