@@ -50,14 +50,3 @@ class UserController:
             ret.append(user)
 
         return ret
-
-    def login(self, username, picture):
-        """Login to the app"""
-        cursor = self.dbconnection.count_documents(
-            {"username": username, "picture": picture}
-        )
-        if cursor == 0:
-            cursor = self.dbconnection.count_documents(
-                {"email": username, "picture": picture}
-            )
-        return cursor == 1
