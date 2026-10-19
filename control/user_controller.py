@@ -4,7 +4,7 @@ Needs a rewrite now that I've switched to Auth0
 """
 
 from database.mongodb_connection import MongoDBConnection
-
+from datamodel.user import User
 
 class UserController:
     """Controls all user operations"""
@@ -12,7 +12,7 @@ class UserController:
     def __init__(self):
         self.dbconnection = MongoDBConnection("users").get_table()
 
-    def create_or_retrieve_user(self, user):
+    def create_or_retrieve_user(self, user) -> User:
         """Create A User
         User Creation really happens in Auth0,
         this just initializes personal info on the server
@@ -22,14 +22,14 @@ class UserController:
             self.dbconnection.insert_one(user)
         return self.dbconnection.find_one({"auth_id": user["auth_id"]})
 
-    def update_username(self, user_id, username):
+    def update_username(self, user_id, username) -> User:
         """Update Username"""
         query_filter = {"auth_id": user_id}
         update_operation = {"$set": {"username": username}}
         self.dbconnection.update_one(query_filter, update_operation)
         return self.dbconnection.find_one({"auth_id": user_id})
 
-    def update_picture(self, user_id, picture):
+    def update_picture(self, user_id, picture) -> User:
         """Update Username"""
         query_filter = {"auth_id": user_id}
         update_operation = {"$set": {"picture": picture}}
@@ -41,7 +41,7 @@ class UserController:
         user = self.dbconnection.find_one({"username": username})
         return {user["username"], user["email"]}
 
-    def get_users(self):
+    def get_users(self) -> list:
         """Retrieve a list of Users"""
         cursor = self.dbconnection.find()
         ret = []

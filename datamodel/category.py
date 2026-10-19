@@ -1,14 +1,19 @@
 """Data Structures for the Category Objects"""
 
 from typing import TypedDict
+from bson import ObjectId
 from flask_restx import fields
 
 
 class Category(TypedDict):
     """Data Structure for the Category Objects"""
-
+    _id: ObjectId
     name: str
     joinable: bool
+
+    def get_id(self):
+        """Return the id"""
+        return self._id
 
 
 class ApiCategory:

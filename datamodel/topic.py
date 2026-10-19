@@ -6,11 +6,11 @@ from flask_restx import fields
 
 class Topic(TypedDict):
     """Basic Data Model for the Topic Type"""
-
     category_id: str
     metadata: str
     topic: str
     type: str
+    user_id_list: list
 
 
 class ApiTopic:
