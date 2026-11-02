@@ -88,9 +88,11 @@ class TopicController:
                     "metadata": metadata,
                 }
             )
+
         return self.dbconnection.find_one(
                 {
                     "user_id_list": user_id_list,
                     "category_id": ObjectId(category_id),
                 }
             )
+
