@@ -63,7 +63,8 @@ class TopicController:
 
     def direct_message_topic(self, user_id_list, category_id=None, metadata=""):
         """return a direct message topic for a user or groups of users"""
-        user_id_list=user_id_list.sort()
+
+        user_id_list.sort()
         if category_id is None:
             cc = CategoryController()
             category = cc.find_or_create_category("direct_messages", False)
