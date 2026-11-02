@@ -3,6 +3,7 @@
 from flask import Flask
 from flask_restx import Api
 from requests.message_requests import bp as message_api
+from requests.private_message_requests import PrivateBlueprint
 from requests.topic_requests import TopicBlueprint
 from requests.category_requests import CategoryBlueprint
 from requests.user_requests import bp as user_api
@@ -15,6 +16,7 @@ app.register_blueprint(user_api, url_prefix="/user")
 app.register_blueprint(TopicBlueprint, url_prefix="/topic")
 app.register_blueprint(CategoryBlueprint, url_prefix="/category")
 app.register_blueprint(LandingBlueprint, url_prefix="/landing")
+app.register_blueprint(PrivateBlueprint, url_prefix="/private" )
 
 
 @app.after_request

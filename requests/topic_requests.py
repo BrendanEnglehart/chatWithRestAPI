@@ -31,7 +31,6 @@ class TopicListAPI(Resource):
         """Fetch a given resource"""
         return {"topics": topic.retrieve_topics(category_id=category_id)}, 201
 
-
 @ns.route("/")
 @ns.response(404, "Error creating topic")
 class CreateTopicAPI(Resource):
