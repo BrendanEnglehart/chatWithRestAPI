@@ -52,6 +52,7 @@ class TestTopicController(unittest.TestCase):
         self.assertFalse(result)
 
     def test_create_topic_success_when_new(self):
+        """Test Create Topic Success When New"""
         # Arrange: topic does not exist yet
         self.mock_table.count_documents.return_value = 0
         expected_doc = {

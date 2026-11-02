@@ -20,7 +20,7 @@ category = CategoryController()
 
 
 @ns.route("/")
-@ns.response(404, "Error creating category")
+@ns.response(404, "Category Error")
 class CreateCategoryAPI(Resource):
     """API for creating the category, which is used as a set of Topics"""
 

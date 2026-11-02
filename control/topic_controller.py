@@ -63,9 +63,11 @@ class TopicController:
 
     def direct_message_topic(self, user_id_list, category_id=None, metadata=""):
         """return a direct message topic for a user or groups of users"""
+        user_id_list=user_id_list.sort()
         if category_id is None:
             cc = CategoryController()
-            category_id = cc.find_or_create_category("direct_messages", False).get_id()
+            category = cc.find_or_create_category("direct_messages", False)
+            category_id = category['_id']
 
         if (
             self.dbconnection.count_documents(
@@ -80,7 +82,14 @@ class TopicController:
                 {
                     "name": "direct_message",
                     "category_id": category_id,
+                    "type" : "direct_message",
                     "user_id_list": user_id_list,
                     "metadata": metadata,
+                }
+            )
+        return self.dbconnection.find_one(
+                {
+                    "user_id_list": user_id_list,
+                    "category_id": ObjectId(category_id),
                 }
             )
